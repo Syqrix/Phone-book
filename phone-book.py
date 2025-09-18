@@ -20,30 +20,40 @@ class PhoneBook:
                 continue
             else:
                 break
-        name = name
-        while True:
-            try:
-                phone = int(input("Please enter your number only 11 numbers"))
-            except TypeError:
-                print("Wrong type again!")
-                continue
-            if len(str(phone)) != 11:
-                print("Number more or less than 11. Please try again")
-                continue
-            else:
-                break
-        phone = "+" + str(phone)
-        self.phone_book.append({"name": {name},
-                                "phone": {phone}})
+        name = name.capitalize()
+        # while True:
+        #     try:
+        #         phone = int(input("Please enter your number only 11 numbers"))
+        #     except TypeError:
+        #         print("Wrong type again!")
+        #         continue
+        #     if len(str(phone)) != 11:
+        #         print("Number more or less than 11. Please try again")
+        #         continue
+        #     else:
+        #         break
+        # phone = "+" + str(phone)
+        self.phone_book.append(name)
 
     def edit_contatct(self):
         pass
 
     def delete_contact(self):
-        pass
+        while True:
+            user_answer = input("What user do you want to delete? ")
+            if not user_answer:
+                print("It's empty try again.")
+                continue
+            else:
+                break
+        if user_answer in self.phone_book:
+            self.phone_book.remove(user_answer)
+            print(f"User: {user_answer} has been deleted.")
+        else:
+            print(f"There is no the user: {user_answer} in your phone book")
 
     def clear_phone_book(self):
-        pass
+        self.phone_book.clear()
 
     def user_wish(self):
         operations = {1: self.check_contacts,
