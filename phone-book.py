@@ -53,7 +53,22 @@ class PhoneBook:
             print(f"There is no the user: {user_answer} in your phone book")
 
     def clear_phone_book(self):
-        self.phone_book.clear()
+        if not self.phone_book:
+            print("Nothing to clear. It's empty!")
+        else:
+            while True:
+                user_answer = input(
+                    "Do you want clear the phone book? (y) yes (n) no: ")
+                if not user_answer:
+                    print("It's empty try again!")
+                elif user_answer.lower() == "y":
+                    self.phone_book.clear()
+                    print("Phone book has been cleared!")
+                    break
+                elif user_answer.lower() == "n":
+                    break
+                else:
+                    print("Error: Wrong type of data or words. Try again")
 
     def user_wish(self):
         operations = {1: self.check_contacts,
