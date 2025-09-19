@@ -6,8 +6,24 @@ class PhoneBook:
         print("Welcome! This is phone book app! You can press q to quit.")
 
     def check_contacts(self):
-        for i in self.phone_book:
-            print(i)
+        if not self.phone_book:
+            print("Your phone book is empty")
+            while True:
+                user_answer = input(
+                    "Do you want to add contact? (y) yes (n) no: ")
+                if not user_answer:
+                    print("It's empty. Try again")
+                elif user_answer.lower() == "y":
+                    self.add_contact()
+                    break
+                elif user_answer.lower() == "n":
+                    break
+                else:
+                    print("You have wrong type of data or word! Try again.")
+
+        else:
+            for i in self.phone_book:
+                print(i)
 
     def add_contact(self):
         while True:
@@ -40,7 +56,8 @@ class PhoneBook:
 
     def delete_contact(self):
         while True:
-            user_answer = input("What user do you want to delete? ")
+            user_answer = input(
+                "What user do you want to delete? ").capitalize()
             if not user_answer:
                 print("It's empty try again.")
                 continue
