@@ -52,7 +52,12 @@ class PhoneBook:
         self.phone_book.append(name)
 
     def edit_contatct(self):
-        pass
+        while True:
+            user_answer = input("What contact do you want to change? ")
+            if not user_answer:
+                print("It's empty. Try again")
+            elif user_answer in self.phone_book:
+                self.phone_book  # Continue working on edititng
 
     def delete_contact(self):
         while True:
@@ -111,6 +116,9 @@ class PhoneBook:
             else:
                 print("Only numbers!")
                 continue
+            print("\n Avaibal operations:")
+            for keys, func in operations.items():
+                print(f"{keys}: {func.__name__}")
 
 
 def main():
@@ -119,7 +127,7 @@ def main():
         app.say_hi()
         answer = app.user_wish()
         if answer is None:
-            print("End of the programm")
+            print("End of the programm! Thank you for using!")
             break
 
 
