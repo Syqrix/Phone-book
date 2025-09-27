@@ -1,9 +1,18 @@
+from abc import ABC, abstractmethod
+
+
 class PhoneBook:
-    def __init__(self):
+    def __init__(self, text="Welcome! This is phone book app! You can press q to quit.",
+                 text2="Bye"):
+        self.text = text
+        self.text2 = text2
         self.phone_book = []
 
     def say_hi(self):
-        print("Welcome! This is phone book app! You can press q to quit.")
+        print(self.text)
+
+    def say_bye(self):
+        print(self.text2)
 
     def check_contacts(self):
         if not self.phone_book:
