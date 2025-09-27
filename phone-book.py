@@ -1,24 +1,18 @@
 from abc import ABC, abstractmethod
 
 
-class PhoneBook:
-    def __init__(self, text="Welcome! This is phone book app! You can press q to quit.",
-                 text2="Bye"):
-        self.text = text
-        self.text2 = text2
-        self.phone_book = []
+class Operations(ABC):
+    @abstractmethod
+    def execute(self):
+        pass
 
-    def say_hi(self):
-        print(self.text)
 
-    def say_bye(self):
-        print(self.text2)
-
-    def check_contacts(self):
+class Checking(Operations):
+    def exexute(self):
         if not self.phone_book:
             print("Your phone book is empty")
             while True:
-                user_answer = input(
+                user_answer: str = input(
                     "Do you want to add contact? (y) yes (n) no: ")
                 if not user_answer:
                     print("It's empty. Try again")
@@ -29,14 +23,15 @@ class PhoneBook:
                     break
                 else:
                     print("You have wrong type of data or word! Try again.")
-
         else:
             for i in self.phone_book:
                 print(i)
 
-    def add_contact(self):
+
+class Adding(Operations):
+    def execute(self):
         while True:
-            name = input("Name: ")
+            name: str = input("Name: ")
             if not name:
                 print("Please enter the name.")
                 continue
@@ -45,7 +40,7 @@ class PhoneBook:
                 continue
             else:
                 break
-        name = name.capitalize()
+        # name: str = name.capitalize()
         # while True:
         #     try:
         #         phone = int(input("Please enter your number only 11 numbers"))
@@ -58,9 +53,11 @@ class PhoneBook:
         #     else:
         #         break
         # phone = "+" + str(phone)
-        self.phone_book.append(name)
+        # self.phone_book.append(name)
 
-    def edit_contatct(self):
+
+class Editing(Operations):
+    def execute(self):
         while True:
             user_answer = input("What contact do you want to change? ")
             if not user_answer:
@@ -68,7 +65,9 @@ class PhoneBook:
             elif user_answer in self.phone_book:
                 self.phone_book  # Continue working on edititng
 
-    def delete_contact(self):
+
+class Deleting(Operations):
+    def execute(self):
         while True:
             user_answer = input(
                 "What user do you want to delete? ").capitalize()
@@ -83,7 +82,9 @@ class PhoneBook:
         else:
             print(f"There is no the user: {user_answer} in your phone book")
 
-    def clear_phone_book(self):
+
+class Clearing(Operations):
+    def execute(self):
         if not self.phone_book:
             print("Nothing to clear. It's empty!")
         else:
@@ -100,6 +101,53 @@ class PhoneBook:
                     break
                 else:
                     print("Error: Wrong type of data or words. Try again")
+
+
+class Comunication:
+    def __init__(self, text="Welcome! This is phone book app! You can press q to quit.",
+                 text2="Bye"):
+        self.text = text
+        self.text2 = text2
+
+    def say_hi(self):
+        print(self.text)
+
+    def say_bye(self):
+        print(self.text2)
+
+
+class PhoneBook:
+    def __init__(self, ui: Comunication):
+        self.phone_book = []
+        self.ui = ui
+
+    def user_wish(self):
+        operations = {1: self.check_contacts,
+                      2: self.add_contact,
+                      3: self.edit_contatct,
+                      4: self.delete_contact,
+                      5: self.clear_phone_book,
+                      }
+        print("\n Avaibal operations:")
+        for keys, func in operations.items():
+            print(f"{keys}: {func.__name__}")
+        while True:
+            user_answer_str = input(
+                "What kind of operation do you want to use? ")
+            if not user_answer_str:
+                print("It's empty please try enter something!")
+                continue
+            if user_answer_str.lower() == "q":
+                return None
+            if user_answer_str.isdigit():
+                user_answer = int(user_answer_str)
+                operations[user_answer]()
+            else:
+                print("Only numbers!")
+                continue
+            print("\n Avaibal operations:")
+            for keys, func in operations.items():
+                print(f"{keys}: {func.__name__}")
 
     def user_wish(self):
         operations = {1: self.check_contacts,
@@ -132,12 +180,9 @@ class PhoneBook:
 
 def main():
     while True:
-        app = PhoneBook()
-        app.say_hi()
-        answer = app.user_wish()
-        if answer is None:
-            print("End of the programm! Thank you for using!")
-            break
+        ui = Comunication()
+        app = PhoneBook(ui)
+        app.run()
 
 
 if __name__ == "__main__":
