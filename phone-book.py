@@ -1,4 +1,6 @@
 from abc import ABC, abstractmethod
+import json
+import csv
 
 
 class Operations(ABC):
@@ -94,6 +96,29 @@ class Deleting(Operations):
             print(f"User: {user_answer} has been deleted.")
         else:
             print(f"There is no the user: {user_answer} in your phone book")
+            type_of_variations = []
+            for i in range(len(self.phone_book)):
+                if self.phone_book[i][0:len(user_answer)] == user_answer[0:]:
+                    type_of_variations.append(self.phone_book[i])
+                else:
+                    continue
+                i = 0
+                while True:
+                    try:
+                        checker = input(
+                            "Did you mean {}.y-yes n-no: ".format(type_of_variations[i]))
+                    except IndexError:
+                        print("There are not options anymore!")
+                        break
+                    if checker.lower() == "y":
+                        self.phone_book.remove(type_of_variations[i])
+                        print(
+                            f"User: {type_of_variations[i]} has been deleted.")
+                        break
+                    elif checker.lower() == "n":
+                        i += 1
+                    else:
+                        print("Wrong type of data!")
 
     def name(self):
         return "Delete a contact"
@@ -128,14 +153,14 @@ class Clearing(Operations):
 class Comunication:
     def __init__(self, text="Welcome! This is phone book app! You can press q to quit.",
                  text2="Bye"):
-        self.text: str = text
-        self.text2: str = text2
+        self._text: str = text
+        self._text2: str = text2
 
     def say_hi(self):
-        print(self.text)
+        print(self._text)
 
     def say_bye(self):
-        print(self.text2)
+        print(self._text2)
 
 
 class PhoneBook:
