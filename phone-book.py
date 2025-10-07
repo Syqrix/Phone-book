@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import json
+import csv
 
 
 class Operations(ABC):
@@ -20,8 +21,7 @@ class Checking(Operations):
         if not self.phone_book:
             print("Your phone book is empty")
         else:
-            for i in self.phone_book:
-                print(i)
+            pass
 
     def name(self) -> str:
         return "Check the phone book"
@@ -43,8 +43,9 @@ class Adding(Operations):
                     print("You have more or less numbers. Try again.")
                 else:
                     break
+            self.contact["number"] = "+" + self.contact["number"]
             self.phone_book.append(self.contact)
-            # continue realize adding
+            break
 
     def name(self) -> str:
         return "Add contact"
