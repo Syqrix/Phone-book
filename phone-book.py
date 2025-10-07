@@ -3,152 +3,6 @@ import json
 import csv
 
 
-class Operations(ABC):
-    @abstractmethod
-    def execute(self):
-        pass
-
-    @abstractmethod
-    def name(self) -> str:
-        pass
-
-
-class Checking(Operations):
-    def __init__(self, phone_book: list):
-        self.phone_book: list = phone_book
-
-    def execute(self):
-        if not self.phone_book:
-            print("Your phone book is empty")
-        else:
-            pass
-
-    def name(self) -> str:
-        return "Check the phone book"
-
-
-class Adding(Operations):
-    def __init__(self, phone_book: list, contact: dict):
-        self.phone_book = phone_book
-        self.contact = contact
-
-    def execute(self):
-        while True:
-            self.contact["name"] = input("Name: ")
-            while True:
-                self.contact["number"] = input("Number: ")
-                if not self.contact["number"]:
-                    print("It's empty try again!")
-                elif len(self.contact["number"]) != 11:
-                    print("You have more or less numbers. Try again.")
-                else:
-                    break
-            self.contact["number"] = "+" + self.contact["number"]
-            self.phone_book.append(self.contact)
-            break
-
-    def name(self) -> str:
-        return "Add contact"
-
-
-class Editing(Operations):
-    def __init__(self, phone_book: list, contact: dict):
-        self.phone_book: list = phone_book
-        self.contact: dict = contact
-
-    def execute(self):
-        while True:
-            user_answer: str = input("What contact do you want to change? ")
-            if not user_answer:
-                print("It's empty. Try again")
-            elif user_answer.lower() == "q":
-                return
-            elif user_answer.capitalize() in self.phone_book:
-                index = self.phone_book.index(user_answer.capitalize())
-                self.phone_book[index] = input("New name: ")
-                break
-            else:
-                print("Where in not such contact in phone book.")
-
-    def name(self) -> str:
-        return "Edit a contact"
-
-
-class Deleting(Operations):
-    def __init__(self, phone_book: list, contact: dict):
-        self.phone_book: list = phone_book
-        self.contact = contact
-
-    def execute(self):
-        while True:
-            user_answer: str = input(
-                "What user do you want to delete? ").capitalize()
-            if not user_answer:
-                print("It's empty try again.")
-                continue
-            else:
-                break
-        if user_answer in self.phone_book:
-            self.phone_book.remove(user_answer)
-            print(f"User: {user_answer} has been deleted.")
-        else:
-            print(f"There is no the user: {user_answer} in your phone book")
-            type_of_variations: list = []
-            for i in range(len(self.phone_book)):
-                if self.phone_book[i][0:len(user_answer)] == user_answer[0:]:
-                    type_of_variations.append(self.phone_book[i])
-                else:
-                    continue
-                probably_answer: int = 0
-                while True:
-                    try:
-                        checker: str = input(
-                            "Did you mean {}.y-yes n-no: "
-                            .format(type_of_variations[probably_answer]))
-                    except IndexError:
-                        print("There are not options anymore!")
-                        break
-                    if checker.lower() == "y":
-                        self.phone_book.remove(
-                            type_of_variations[probably_answer])
-                        print(
-                            f"User: {type_of_variations[probably_answer]} has been deleted.")
-                        break
-                    elif checker.lower() == "n":
-                        probably_answer += 1
-                    else:
-                        print("Wrong type of data!")
-
-    def name(self) -> str:
-        return "Delete a contact"
-
-
-class Clearing(Operations):
-    def __init__(self, phone_book: list):
-        self.phone_book: list = phone_book
-
-    def execute(self):
-        if not self.phone_book:
-            print("Nothing to clear. It's empty!")
-        else:
-            while True:
-                user_answer: str = input(
-                    "Do you want clear the phone book? (y) yes (n) no: ")
-                if not user_answer:
-                    print("It's empty try again!")
-                elif user_answer.lower() == "y":
-                    self.phone_book.clear()
-                    print("Phone book has been cleared!")
-                    break
-                elif user_answer.lower() == "n":
-                    break
-                else:
-                    print("Error: Wrong type of data or words. Try again")
-
-    def name(self) -> str:
-        return "Clear the phone book"
-
-
 class Comunication:
     def __init__(self, text="Welcome! This is phone book app! You can press q to quit.",
                  text2="Bye"):
@@ -162,18 +16,98 @@ class Comunication:
         print(self._text2)
 
 
+class Contact:
+    def __init__(self, first_name: str,
+                 last_name: str, company: str,
+                 phone_number: str, notes: str, proces: PhoneBook):
+        self.first_name: str = first_name
+        self.last_name = last_name
+        self.company = company
+        self.phone_number = phone_number
+        self.notes = notes
+        self.proces = proces
+        self.contact = {}
+
+    def create_contact(self):
+        self.contact["First name"] = self.first_name
+        self.contact["Last name"] = self.last_name
+        self.contact["Company"] = self.company
+        self.contact["Phone number"] = self.phone_number
+        self.contact["Notes"] = self.notes
+        self.proces.phone_book.append(self.contact)
+
+    def check_contact(self, contact):
+        if contact in self.proces.phone_book:
+            return True
+
+    def edit_contact(self, contact: dict):
+        if self.check_contact(contact):
+            index_of_user = self.proces.phone_book.index(contact)
+            changed_user = self.proces.phone_book.copy(index_of_user)
+            self.proces.phone_book.remove(contact)
+            options = {
+                1: "First name",
+                2: "Last name",
+                3: "Company",
+                4: "Phone number",
+                5: "Notes"
+            }
+            print("\n Avaibal operations:")
+            for key, value in options.items():
+                print(f"{key}: {value}")
+
+            user_wish = int(input("What do you want to change?"))
+            # if
+
+        else:
+            print("There is no such user in phone book.")
+
+    def remove_contact(self, contact: dict):
+        self.proces.phone_book.remove(contact)
+
+
+class Checker:
+
+    def checker_yes_or_no(self, user_input):
+        while True:
+            if not user_input:
+                print("Type something!")
+            elif user_input.lower() in ["yes", "ye", "y"]:
+                return True
+            elif user_input.lower() in ["no", "n", "q"]:
+                return
+            else:
+                print("Wrong type of data, try again!")
+
+
 class PhoneBook:
-    def __init__(self):
+    def __init__(self, checker: Checker, contact: Contact):
         self.phone_book: list = []
-        self.contact: dict = {}
+        self.checker = checker
+        self.contact = contact
+
+    def check_phone_book(self):
+        if not self.phone_book:
+            user_wish = input(
+                "There is no one in phone book. Do you want to add? ")
+            if self.checker.checker_yes_or_no(user_wish):
+                self.contact.create_contact()
+            else:
+                for i in self.phone_book:
+                    print(i)
+
+    def clear_phone_book(self):
+        user_wish = input("Do you really want to clear phone_book y/n? ")
+        if self.checker.checker_yes_or_no(user_wish):
+            self.phone_book.clear()
+        else:
+            return
+
+
+class UserWish:
 
     def user_wish(self):
-        operations: dict = {1: Checking(self.phone_book),
-                            2: Adding(self.phone_book, self.contact),
-                            3: Editing(self.phone_book, self.contact),
-                            4: Deleting(self.phone_book, self.contact),
-                            5: Clearing(self.phone_book),
-                            }
+        operations: dict = {}
         print("\n Avaibal operations:")
         for keys, func in operations.items():
             print(f"{keys}: {func.name()}")
@@ -210,7 +144,9 @@ class App:
 def main():
     while True:
         ui = Comunication()
-        proces = PhoneBook()
+        checker = Checker()
+        contact = Contact()
+        proces = PhoneBook(checker, contact)
         app = App(ui, proces)
         app.run()
 
