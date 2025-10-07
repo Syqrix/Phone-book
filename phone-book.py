@@ -4,7 +4,8 @@ import csv
 
 
 class Comunication:
-    def __init__(self, text="Welcome! This is phone book app! You can press q to quit.",
+    def __init__(self,
+                 text="Welcome! This is phone book app! You can press q to quit.",
                  text2="Bye"):
         self._text: str = text
         self._text2: str = text2
