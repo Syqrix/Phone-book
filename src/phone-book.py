@@ -20,13 +20,12 @@ class Comunication:
 class Contact:
     def __init__(self, first_name: str,
                  last_name: str, company: str,
-                 phone_number: str, notes: str, proces: PhoneBook):
+                 phone_number: str, notes: str):
         self.first_name: str = first_name
         self.last_name = last_name
         self.company = company
         self.phone_number = phone_number
         self.notes = notes
-        self.proces = proces
         self.contact = {}
 
     def create_contact(self):
