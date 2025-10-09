@@ -1,6 +1,8 @@
 # This is the main logic of our app
 import sys
 
+# Continue working on logic add objects to classes to init
+
 
 class ContactOperations:
     def create_contact(self):
