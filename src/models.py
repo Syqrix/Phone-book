@@ -1,3 +1,4 @@
+# This is block of code for initialization of our data
 from dataclasses import dataclass
 
 
