@@ -1,4 +1,4 @@
-from src.phone_book import Comunication
+from main import Comunication
 import pytest
 
 
