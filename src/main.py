@@ -1,24 +1,20 @@
 # This window for main content of my app
 from ui import Comunication
-from logic import ContactOperations, Check
+from logic import ContactOperations, PhoneBookOperations, Menu
 from models import PhoneBook
-from utilities import Validator
+from utilities import Validator, Check
 
 
 class App:
-    def __init__(self, ui: Comunication, operation: ContactOperations):
+    def __init__(self, ui: Comunication, menu: Menu):
         self.ui = ui
-        self.operation = operation
+        self.menu = menu
 
     def run(self):
         while True:
-            i = 0
             self.ui.say_hi()
-            while i < 3:
-                self.operation.create_contact()
-                i += 1
+            self.menu.user_wish()
             self.ui.say_bye()
-            break
 
 
 def main():
@@ -27,8 +23,10 @@ def main():
     validator = Validator()
     book = PhoneBook()
     check = Check(book)
-    operation = ContactOperations(validator, book, check)
-    app = App(ui, operation)
+    contact_operation = ContactOperations(validator, book, check)
+    phone_book_operation = PhoneBookOperations(book, validator, ui)
+    menu = Menu(validator, contact_operation, phone_book_operation)
+    app = App(ui, menu)
     app.run()
 
 

@@ -13,6 +13,6 @@ class Comunication:
         print(self._hi_words)
 
     def say_bye(self) -> str:
-        print("Exiting...")
-        sleep(1)
         print(self._bye_words)
+        print("Exiting...")
+        sleep(2)

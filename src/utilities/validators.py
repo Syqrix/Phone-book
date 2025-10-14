@@ -1,4 +1,5 @@
 # This block of code allows to check what we need fast
+import sys
 
 
 class Validator:
@@ -10,7 +11,7 @@ class Validator:
             elif user_input.lower() in ["yes", "ye", "y"]:
                 return True
             elif user_input.lower() in ["no", "n", "q"]:
-                return
+                return False
             else:
                 print("Wrong type of data, try again!")
 
@@ -21,7 +22,7 @@ class Validator:
                 print("It's empty please try enter something!")
                 continue
             elif user_answer.lower() == "q":
-                return None
+                sys.exit()
             elif user_answer.isalpha():
                 print("Only numbers!")
                 continue
@@ -39,7 +40,7 @@ class Validator:
                 return user_input
 
     @staticmethod
-    def number_validator(user_input, string):
+    def number_validator(user_input, string) -> str:
         while True:
             if not user_input:
                 print("This valuse should'nt be empty!, please enter something.")
