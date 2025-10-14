@@ -4,7 +4,7 @@ import sys
 
 class Validator:
     @staticmethod
-    def checker_yes_or_no(user_input) -> str:
+    def checker_yes_or_no(user_input: str) -> bool:
         while True:
             if not user_input:
                 print("Type something!")
@@ -16,15 +16,17 @@ class Validator:
                 print("Wrong type of data, try again!")
 
     @staticmethod
-    def checker_for_int(user_answer) -> int:
+    def checker_for_int(user_answer: str, string: int) -> int:
         while True:
             if not user_answer:
                 print("It's empty please try enter something!")
+                user_answer = input(string)
                 continue
             elif user_answer.lower() == "q":
                 sys.exit()
             elif user_answer.isalpha():
                 print("Only numbers!")
+                user_answer = input(string)
                 continue
             else:
                 return int(user_answer)
@@ -40,7 +42,7 @@ class Validator:
                 return user_input
 
     @staticmethod
-    def number_validator(user_input, string) -> str:
+    def number_validator(user_input: str, string: str) -> str:
         while True:
             if not user_input:
                 print("This valuse should'nt be empty!, please enter something.")

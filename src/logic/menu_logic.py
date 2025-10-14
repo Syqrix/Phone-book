@@ -1,5 +1,4 @@
 # This is the main logic of our app
-import sys
 
 
 class Menu:
@@ -10,7 +9,7 @@ class Menu:
 
     def user_wish(self):
         while True:
-            operations = {
+            operations: dict = {
                 1: ("Check phone book", self.phone_book_operation.check_phone_book),
                 2: ("Clear phone book", self.phone_book_operation.clear_phone_book),
                 3: ("Create contact", self.contact_operation.create_contact),
@@ -24,8 +23,9 @@ class Menu:
                 print(f"{keys}: {desc}")
 
             while True:
-                user_input = input("What operation do you want to get? ")
-                user_input = self.validator.checker_for_int(user_input)
+                user_input: str = input("What operation do you want to get? ")
+                user_input: int = self.validator.checker_for_int(
+                    user_input, "What operation do you want to get? ")
                 if user_input not in range(1, 8):
                     print("Not in avaibale range, try again.")
                     continue

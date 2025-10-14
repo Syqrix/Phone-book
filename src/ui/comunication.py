@@ -4,7 +4,7 @@ from time import sleep
 
 class Comunication:
     def __init__(self,
-                 hi_words="Welcome! This is phone book app! You can press q to quit.",
+                 hi_words="Welcome! This is phone book app!",
                  bye_words="Bye, thank you for using."):
         self._hi_words: str = hi_words
         self._bye_words: str = bye_words
