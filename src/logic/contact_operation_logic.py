@@ -2,31 +2,30 @@ from models import Contact
 
 
 class ContactOperations:
-    def __init__(self, checker, book):
-        self.checker = checker
+    def __init__(self, validator, book, check):
+        self.validator = validator
         self.book = book
-
-# Continue working on checking dublicat numbers
-    def check_duplicat_number(self, phone_number):
-        for contact in self.book.list_of_contacts:
-            if contact.phone_number == phone_number:
-                print()
-                return True
-            else:
-                print("No dublicats")
-                return False
+        self.check = check
 
     def create_contact(self):
-        contact_name = self.checker.checker_for_empty_important_data(
-            input("Name: ").capitalize(), "Name: ")
-        company = input("Company: ").capitalize()
-        phone_number = self.checker.number_validator(
-            input("Phone number: +"), "Phone number: +")
-        phone_number = self.check_duplicat_number(phone_number)
-        notes = input("Notes: ").capitalize()
+        while True:
+            contact_name = self.validator.checker_for_empty_important_data(
+                input("Name: ").capitalize(), "Name: ")
+            contact_name = self.check.check_duplicat_names(contact_name)
+            if contact_name is False:
+                continue
+            else:
+                break
+        while True:
+            phone_number = self.validators.number_validator(
+                input("Phone number: +"), "Phone number: +")
+            phone_number = self.check.check_duplicat_number(phone_number)
+            if phone_number is False:
+                continue
+            else:
+                break
         new_contact = Contact(contact_name=contact_name,
-                              company=company, phone_number=phone_number,
-                              notes=notes)
+                              phone_number=phone_number)
 
         self.book.list_of_contacts.append(new_contact)
 

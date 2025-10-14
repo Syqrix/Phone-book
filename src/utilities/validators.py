@@ -1,7 +1,7 @@
 # This block of code allows to check what we need fast
 
 
-class Checker:
+class Validator:
     @staticmethod
     def checker_yes_or_no(user_input) -> str:
         while True:

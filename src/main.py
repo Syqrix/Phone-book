@@ -1,8 +1,8 @@
 # This window for main content of my app
 from ui import Comunication
-from logic import ContactOperations
-from models import PhoneBook, Contact
-from utilities import Checker
+from logic import ContactOperations, Check
+from models import PhoneBook
+from utilities import Validator
 
 
 class App:
@@ -16,7 +16,6 @@ class App:
             self.ui.say_hi()
             while i < 3:
                 self.operation.create_contact()
-                self.operation.check_contact("edward")
                 i += 1
             self.ui.say_bye()
             break
@@ -25,9 +24,10 @@ class App:
 def main():
 
     ui = Comunication()
-    checker = Checker()
+    validator = Validator()
     book = PhoneBook()
-    operation = ContactOperations(checker, book)
+    check = Check(book)
+    operation = ContactOperations(validator, book, check)
     app = App(ui, operation)
     app.run()
 
