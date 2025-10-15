@@ -53,3 +53,4 @@ class DataManager:
 
         for i in self.book.list_of_contacts:
             print(i)
+#
