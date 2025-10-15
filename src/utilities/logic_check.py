@@ -32,7 +32,7 @@ class Check:
                 return False
             else:
                 continue
-        return phone_number
+        return "+" + phone_number
 
     def check_duplicat_names(self, name: str) -> str:
         for contact in self.book.list_of_contacts:

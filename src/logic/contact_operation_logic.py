@@ -63,7 +63,8 @@ class ContactOperations:
                 elif user_answer == 2:
                     user_phone_number_input: str = input(
                         f"What new phone number for this user: {user_input}? ")
-                    self.book.list_of_contacts[index].phone_number = user_phone_number_input
+                    self.book.list_of_contacts[index].phone_number = "+" + \
+                        user_phone_number_input
                     break
                 else:
                     print("There in no such number, try again!")

@@ -13,7 +13,7 @@ class PhoneBookOperations:
             print("There is no one in phone book.")
         else:
             for contact in self.book.list_of_contacts:
-                print(f"{contact.contact_name} | +{contact.phone_number}")
+                print(f"{contact.contact_name} | {contact.phone_number}")
 
     def clear_phone_book(self):
         user_wish: str = input("Do you really want to clear phone_book y/n? ")
@@ -24,6 +24,6 @@ class PhoneBookOperations:
             return
 
     def exit_app(self):
-        self.data_manager.save_contacts_to_csv()
+        self.data_manager.save_data_to_txt()
         self.ui.say_bye()
         sys.exit()
