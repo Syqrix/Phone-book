@@ -24,6 +24,6 @@ class PhoneBookOperations:
             return
 
     def exit_app(self):
-        self.data_manager.save_data_to_txt()
+        self.data_manager.save_data()
         self.ui.say_bye()
         sys.exit()

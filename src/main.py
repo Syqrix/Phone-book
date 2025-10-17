@@ -13,8 +13,7 @@ class App:
 
     def run(self):
         while True:
-            self.data_manager.check_folder()
-            self.data_manager.load_data_from_txt()
+            self.data_manager.load_data()
             self.ui.say_hi()
             self.menu.user_wish()
             self.ui.say_bye()
