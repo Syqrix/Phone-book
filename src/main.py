@@ -1,12 +1,11 @@
 # This window for main content of my app
 from ui import SayHi, SayBye
-from logic import ContactOperation, Menu, PhoneBookOperation, DataManager
 from logic import CheckFolder, CheckPhoneBook, ClearPhoneBook, ExitPhoneBook
 from logic import ChooseOperation, CreateContact, CheckContact, EditContact
 from logic import RemoveContact
-from logic import SaveData, LoadData, LoadDataFromJson, SaveDataToJson
+from logic import LoadDataFromJson, SaveDataToJson
 from models import PhoneBook
-from utilities import Check, ChekerForInt, CheckerYesOrNo, CheckEmptyImportantData
+from utilities import ChekerForInt, CheckerYesOrNo, CheckEmptyImportantData
 from utilities import NumberValidator, CheckDublicatNames, CheckDublicatNumber
 from utilities import CheckUserInTheList, ReturnContactIndex, ReturnContact
 
@@ -33,42 +32,49 @@ class App:
 
 
 def main():
+    # --- Phone book ---
     book = PhoneBook()
+
+    # --- Validators ---
     int_validator = ChekerForInt()
     yes_no_validator = CheckerYesOrNo()
     empty_check_validator = CheckEmptyImportantData()
     number_validator = NumberValidator()
-    choose_user_wish = ChooseOperation()
-    check_duplicat_names = CheckDublicatNames()
-    check_dublicat_number = CheckDublicatNumber()
-    check_user_in_the_list = CheckUserInTheList()
-    return_contact_index = ReturnContactIndex()
-    return_contact = ReturnContact()
-    abstract_logic_check = Check(book)
-    abstract_data_manager = DataManager(book)
-    abstract_load_data = LoadData(book)
-    abstract_save_data = SaveData(book)
-    save_json_data = SaveDataToJson()
-    load_json_data = LoadDataFromJson()
+
+    # --- Logic checking ---
+    check_duplicat_names = CheckDublicatNames(book)
+    check_dublicat_number = CheckDublicatNumber(book)
+    check_user_in_the_list = CheckUserInTheList(book)
+    return_contact_index = ReturnContactIndex(book)
+    return_contact = ReturnContact(book)
+
+    # --- Data ---
+    save_json_data = SaveDataToJson(book)
+    load_json_data = LoadDataFromJson(book)
+    check_folder = CheckFolder(book)
+
+    # --- Ui ---
     say_hi = SayHi()
     say_bye = SayBye()
-    check_folder = CheckFolder()
-    abstract_phone_operation = PhoneBookOperation(
-        book, yes_no_validator, say_bye, save_json_data)
-    abstract_contact_operation = ContactOperation(
-        empty_check_validator, number_validator, int_validator, yes_no_validator,
-        check_duplicat_names, check_dublicat_number, check_user_in_the_list,
-        return_contact_index, return_contact)
-    create_contact = CreateContact()
-    check_contact = CheckContact()
-    edit_contact = EditContact()
-    remove_contact = RemoveContact()
-    check_phone_book = CheckPhoneBook()
-    clear_phone_book = ClearPhoneBook()
-    exit_phone_book = ExitPhoneBook()
-    menu = Menu(
+
+    # --- Operations ---
+    create_contact = CreateContact(
+        book, empty_check_validator, number_validator, check_duplicat_names,
+        check_dublicat_number)
+    check_contact = CheckContact(check_user_in_the_list)
+    edit_contact = EditContact(
+        book, int_validator, check_user_in_the_list, return_contact_index)
+    remove_contact = RemoveContact(
+        book, yes_no_validator, check_user_in_the_list, return_contact)
+    check_phone_book = CheckPhoneBook(book)
+    clear_phone_book = ClearPhoneBook(book, yes_no_validator)
+    exit_phone_book = ExitPhoneBook(save_json_data, say_bye)
+
+    choose_user_wish = ChooseOperation(
         int_validator, check_phone_book, clear_phone_book, exit_phone_book,
         create_contact, check_contact, edit_contact, remove_contact)
+
+    # --- Main App ---
     app = App(
         say_hi, say_bye, choose_user_wish, check_folder,
         load_json_data, save_json_data)

@@ -12,6 +12,9 @@ class Check(ABC):
 
 
 class CheckUserInTheList(Check):
+    def __init__(self, book):
+        super().__init__(book)
+
     def logic_check_operation(self, user_input: str) -> bool:
         for contact in self.book.list_of_contacts:
             if contact.contact_name == user_input:
@@ -22,6 +25,9 @@ class CheckUserInTheList(Check):
 
 
 class ReturnContact(Check):
+    def __init__(self, book):
+        super().__init__(book)
+
     def logic_check_operation(self, user_input: str) -> object:
         for contact in self.book.list_of_contacts:
             if contact.contact_name == user_input:
@@ -31,6 +37,9 @@ class ReturnContact(Check):
 
 
 class ReturnContactIndex(Check):
+    def __init__(self, book):
+        super().__init__(book)
+
     def logic_check_operation(self, user_input: str) -> int:
         for contact in self.book.list_of_contacts:
             if contact.contact_name == user_input:
@@ -41,6 +50,9 @@ class ReturnContactIndex(Check):
 
 
 class CheckDublicatNumber(Check):
+    def __init__(self, book):
+        super().__init__(book)
+
     def logic_check_operation(self, phone_number: str) -> str:
         for contact in self.book.list_of_contacts:
             if contact.phone_number == phone_number:
@@ -52,6 +64,9 @@ class CheckDublicatNumber(Check):
 
 
 class CheckDublicatNames(Check):
+    def __init__(self, book):
+        super().__init__(book)
+
     def logic_check_operation(self, name: str) -> str:
         for contact in self.book.list_of_contacts:
             if contact.contact_name == name:

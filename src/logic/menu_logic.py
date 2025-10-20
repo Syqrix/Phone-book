@@ -21,6 +21,12 @@ class Menu(ABC):
 
 
 class ChooseOperation(Menu):
+    def __init__(self, int_validator, check_phone_book, clear_phone_book,
+                 exit_phone_book, create_contact, check_contact, edit_contact,
+                 remove_contact):
+        super().__init__(
+            int_validator, check_phone_book, clear_phone_book, exit_phone_book,
+            create_contact, check_contact, edit_contact, remove_contact)
 
     def operation(self):
         while True:

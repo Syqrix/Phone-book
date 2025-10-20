@@ -1,16 +1,3 @@
 {
-    "contacts": [
-        {
-            "name": "Edward",
-            "phone_number": "+79084943915"
-        },
-        {
-            "name": "Egor",
-            "phone_number": "+79084943914"
-        },
-        {
-            "name": "Anastasia",
-            "phone_number": "+79084943911"
-        }
-    ]
+    "contacts": []
 }

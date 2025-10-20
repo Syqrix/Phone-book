@@ -10,12 +10,11 @@ from abc import ABC, abstractmethod
 class DataManager(ABC):
 
     def __init__(self, book):
-        self.path_of_folder = Path("/data")
-        self.path_of_text_data = Path("/data/data.txt")
-        self.path_of_json_data = Path("/data/data.json")
-        self.path_of_csv_data = Path("/data/data.csv")
+        self.path_of_folder = Path("data")
+        self.path_of_text_data = Path("data/data.txt")
+        self.path_of_json_data = Path("data/data.json")
+        self.path_of_csv_data = Path("data/data.csv")
         self.book = book
-        self.json_template = '{"Contacts": []}'
 
     @abstractmethod
     def operation(self):
@@ -23,6 +22,9 @@ class DataManager(ABC):
 
 
 class CheckFolder(DataManager):
+    def __init__(self, book):
+        super().__init__(book)
+
     def operation(self):
         if not self.path_of_folder.exists():
             self.path_of_folder.mkdir()
@@ -30,12 +32,11 @@ class CheckFolder(DataManager):
 
 class SaveData(ABC):
     def __init__(self, book):
-        self.path_of_folder = Path("/data")
-        self.path_of_text_data = Path("/data/data.txt")
-        self.path_of_json_data = Path("/data/data.json")
-        self.path_of_csv_data = Path("/data/data.csv")
+        self.path_of_folder = Path("data")
+        self.path_of_text_data = Path("data/data.txt")
+        self.path_of_json_data = Path("data/data.json")
+        self.path_of_csv_data = Path("data/data.csv")
         self.book = book
-        self.json_template = '{"Contacts": []}'
 
     @abstractmethod
     def save_data(self):
@@ -43,6 +44,9 @@ class SaveData(ABC):
 
 
 class SaveDataToTxt(SaveData):
+    def __init__(self, book):
+        super().__init__(book)
+
     def save_data(self):
         with open(self.path_of_text_data, "w") as file:
             for contact in self.book.list_of_contacts:
@@ -51,6 +55,9 @@ class SaveDataToTxt(SaveData):
 
 
 class SaveDataToJson(SaveData):
+    def __init__(self, book):
+        super().__init__(book)
+
     def save_data(self):
         with open(self.path_of_json_data, "w", encoding="utf-8") as file:
             data = {"contacts": [{"name": contact.contact_name,
@@ -60,6 +67,9 @@ class SaveDataToJson(SaveData):
 
 
 class SaveDataToCsv(SaveData):
+    def __init__(self, book):
+        super().__init__(book)
+
     def save_data_to_csv(self):
         with open(self.path_of_csv_data, "w", encoding="utf-8") as file:
             writer = csv.DictWriter(file, fieldnames=["name", "phone_number"])
@@ -72,12 +82,11 @@ class SaveDataToCsv(SaveData):
 
 class LoadData(ABC):
     def __init__(self, book):
-        self.path_of_folder = Path("/data")
-        self.path_of_text_data = Path("/data/data.txt")
-        self.path_of_json_data = Path("/data/data.json")
-        self.path_of_csv_data = Path("/data/data.csv")
+        self.path_of_folder = Path("data")
+        self.path_of_text_data = Path("data/data.txt")
+        self.path_of_json_data = Path("data/data.json")
+        self.path_of_csv_data = Path("data/data.csv")
         self.book = book
-        self.json_template = '{"Contacts": []}'
 
     @abstractmethod
     def load_data(self):
@@ -85,6 +94,9 @@ class LoadData(ABC):
 
 
 class LoadDataFromTxt(LoadData):
+    def __init__(self, book):
+        super().__init__(book)
+
     def load_data(self):
         self.book.list_of_contacts = []
         if not self.path_of_text_data.exists():
@@ -110,6 +122,8 @@ class LoadDataFromTxt(LoadData):
 
 
 class LoadDataFromJson(LoadData):
+    def __init__(self, book):
+        super().__init__(book)
 
     def load_data(self):
         if not self.path_of_json_data.exists():
@@ -127,6 +141,9 @@ class LoadDataFromJson(LoadData):
 
 
 class LoadDataFromCsv(LoadData):
+    def __init__(self, book):
+        super().__init__(book)
+
     def load_data(self):
         if not self.path_of_csv_data.exists():
             self.path_of_csv_data.touch()

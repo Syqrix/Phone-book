@@ -5,9 +5,11 @@ from abc import ABC, abstractmethod
 
 class ContactOperation(ABC):
     def __init__(
-            self, book, check, empty_check_validator, number_validator,
-            int_validator, yes_no_validator, check_duplicat_names, check_dublicat_number,
-            check_user_in_the_list, return_contact_index, return_contact):
+            self, book=None, empty_check_validator=None, number_validator=None,
+            int_validator=None, yes_no_validator=None,
+            check_duplicat_names=None, check_dublicat_number=None,
+            check_user_in_the_list=None, return_contact_index=None,
+            return_contact=None):
         self.empty_check_validator = empty_check_validator
         self.int_validator = int_validator
         self.number_validator = number_validator
@@ -18,13 +20,20 @@ class ContactOperation(ABC):
         self.return_contact_index = return_contact_index
         self.return_contact = return_contact
         self.book = book
-        self.check = check
 
     def operation(self):
         pass
 
 
 class CreateContact(ContactOperation):
+    def __init__(
+            self, book, empty_check_validator, number_validator,
+            check_duplicat_names, check_dublicat_number):
+        super().__init__(
+            book=book, empty_check_validator=empty_check_validator,
+            number_validator=number_validator, check_duplicat_names=check_duplicat_names,
+            check_dublicat_number=check_dublicat_number)
+
     def operation(self) -> object:
         while True:
             contact_name: str = self.empty_check_validator.validation(
@@ -52,6 +61,10 @@ class CreateContact(ContactOperation):
 
 
 class CheckContact(ContactOperation):
+    def __init__(
+            self, check_user_in_the_list):
+        super().__init__(check_user_in_the_list=check_user_in_the_list)
+
     def operation(self) -> str:
         user_input: str = input(
             "What user do you want to check? ").capitalize()
@@ -64,6 +77,13 @@ class CheckContact(ContactOperation):
 
 
 class EditContact(ContactOperation):
+    def __init__(
+            self, book, int_validator, check_user_in_the_list, return_contact_index):
+        super().__init__(
+            book=book, int_validator=int_validator,
+            check_user_in_the_list=check_user_in_the_list,
+            return_contact_index=return_contact_index)
+
     def operation(self) -> str:
         chose: dict = {
             1: "Name",
@@ -98,6 +118,13 @@ class EditContact(ContactOperation):
 
 
 class RemoveContact(ContactOperation):
+    def __init__(
+            self, book, yes_no_validator, check_user_in_the_list, return_contact):
+        super().__init__(
+            book=book, yes_no_validator=yes_no_validator,
+            check_user_in_the_list=check_user_in_the_list,
+            return_contact=return_contact)
+
     def operation(self):
         user_input: str = input(
             "What user do you want to remove? ").capitalize()
