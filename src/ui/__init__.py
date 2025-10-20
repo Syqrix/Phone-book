@@ -1,1 +1,1 @@
-from .comunication import Comunication
+from .comunication import SayHi, SayBye

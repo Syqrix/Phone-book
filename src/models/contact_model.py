@@ -1,4 +1,4 @@
-# This is block of code for initialization of our data
+# This is block of code for initialization of our contact data
 from dataclasses import dataclass
 
 

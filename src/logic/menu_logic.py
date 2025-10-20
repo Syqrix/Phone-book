@@ -1,13 +1,20 @@
 # This is the main logic of our app
+from abc import ABC, abstractmethod
 
 
-class Menu:
+class Menu(ABC):
     def __init__(self, validator, contact_operation, phone_book_operation):
         self.validator = validator
         self.contact_operation = contact_operation
         self.phone_book_operation = phone_book_operation
 
-    def user_wish(self):
+    @abstractmethod
+    def operation(self):
+        pass
+
+
+class ChooseOperation(Menu):
+    def operation(self):
         while True:
             operations: dict = {
                 1: ("Check phone book", self.phone_book_operation.check_phone_book),

@@ -1,10 +1,17 @@
-# This block of code allows to check what we need fast
+# This module allows to check data
 import sys
+from abc import ABC, abstractmethod
 
 
-class Validator:
+class Validator(ABC):
+    @abstractmethod
+    def validation(self, user_input, string=None):
+        pass
+
+
+class CheckerYesOrNo(Validator):
     @staticmethod
-    def checker_yes_or_no(user_input: str) -> bool:
+    def validation(user_input: str) -> bool:
         while True:
             if not user_input:
                 print("Type something!")
@@ -15,8 +22,10 @@ class Validator:
             else:
                 print("Wrong type of data, try again!")
 
+
+class ChekerForInt(Validator):
     @staticmethod
-    def checker_for_int(user_answer: str, string: int) -> int:
+    def validation(user_answer: str, string: int) -> int:
         while True:
             if not user_answer:
                 print("It's empty please try enter something!")
@@ -31,8 +40,10 @@ class Validator:
             else:
                 return int(user_answer)
 
+
+class CheckEmptyImportantData(Validator):
     @staticmethod
-    def checker_for_empty_important_data(user_input: str, string: str) -> bool:
+    def validation(user_input: str, string: str) -> bool:
         while True:
             if not user_input:
                 print("This valuse should'nt be empty!, please enter something.")
@@ -41,8 +52,10 @@ class Validator:
             else:
                 return user_input
 
+
+class NumberValidator(Validator):
     @staticmethod
-    def number_validator(user_input: str, string: str) -> str:
+    def validation(user_input: str, string: str) -> str:
         while True:
             if not user_input:
                 print("This valuse should'nt be empty!, please enter something.")
