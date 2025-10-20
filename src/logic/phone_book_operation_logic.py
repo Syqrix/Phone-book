@@ -4,11 +4,11 @@ from abc import ABC, abstractmethod
 
 
 class PhoneBookOperation(ABC):
-    def __init__(self, book, validator, ui, data_manager):
+    def __init__(self, book, yes_no_validator, say_bye, save_json_data):
         self.book = book
-        self.validator = validator
-        self.ui = ui
-        self.data_manager = data_manager
+        self.yes_no_validator = yes_no_validator
+        self.say_bye = say_bye
+        self.save_json_data = save_json_data
 
     @abstractmethod
     def phone_book_operation(self):
@@ -27,7 +27,7 @@ class CheckPhoneBook(PhoneBookOperation):
 class ClearPhoneBook(PhoneBookOperation):
     def phone_book_operation(self):
         user_wish: str = input("Do you really want to clear phone_book y/n? ")
-        checker: bool = self.validator.checker_yes_or_no(user_wish)
+        checker: bool = self.yes_no_validator.validation(user_wish)
         if checker:
             self.book.list_of_contacts.clear()
         else:
@@ -36,6 +36,6 @@ class ClearPhoneBook(PhoneBookOperation):
 
 class ExitPhoneBook(PhoneBookOperation):
     def phone_book_operation(self):
-        self.data_manager.save_data()
-        self.ui.say_bye()
+        self.save_json_data.save_data()
+        self.say_bye.say()
         sys.exit()

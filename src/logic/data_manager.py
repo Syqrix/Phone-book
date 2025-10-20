@@ -22,7 +22,7 @@ class DataManager(ABC):
         pass
 
 
-class CreateFolder(DataManager):
+class CheckFolder(DataManager):
     def operation(self):
         if not self.path_of_folder.exists():
             self.path_of_folder.mkdir()

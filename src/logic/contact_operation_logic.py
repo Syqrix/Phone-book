@@ -4,8 +4,19 @@ from abc import ABC, abstractmethod
 
 
 class ContactOperation(ABC):
-    def __init__(self, validator, book, check):
-        self.validator = validator
+    def __init__(
+            self, book, check, empty_check_validator, number_validator,
+            int_validator, yes_no_validator, check_duplicat_names, check_dublicat_number,
+            check_user_in_the_list, return_contact_index, return_contact):
+        self.empty_check_validator = empty_check_validator
+        self.int_validator = int_validator
+        self.number_validator = number_validator
+        self.yes_no_validator = yes_no_validator
+        self.check_duplicat_names = check_duplicat_names
+        self.check_dublicat_number = check_dublicat_number
+        self.check_user_in_the_list = check_user_in_the_list
+        self.return_contact_index = return_contact_index
+        self.return_contact = return_contact
         self.book = book
         self.check = check
 
@@ -16,17 +27,19 @@ class ContactOperation(ABC):
 class CreateContact(ContactOperation):
     def operation(self) -> object:
         while True:
-            contact_name: str = self.validator.checker_for_empty_important_data(
+            contact_name: str = self.empty_check_validator.validation(
                 input("Name: ").capitalize(), "Name: ")
-            contact_name: str = self.check.check_duplicat_names(contact_name)
+            contact_name: str = self.check_duplicat_names.logic_check_operation(
+                contact_name)
             if contact_name is False:
                 continue
             else:
                 break
         while True:
-            phone_number: str = self.validator.number_validator(
+            phone_number: str = self.number_validator.validation(
                 input("Phone number: +"), "Phone number: +")
-            phone_number: str = self.check.check_duplicat_number(phone_number)
+            phone_number: str = self.check_dublicat_number.logic_check_operation(
+                phone_number)
             if phone_number is False:
                 continue
             else:
@@ -42,7 +55,8 @@ class CheckContact(ContactOperation):
     def operation(self) -> str:
         user_input: str = input(
             "What user do you want to check? ").capitalize()
-        checker: bool = self.check.check_user_in_the_list(user_input)
+        checker: bool = self.check_user_in_the_list.logic_check_operation(
+            user_input)
         if checker:
             print(f"User: {user_input} is in the phone book!")
         else:
@@ -56,14 +70,16 @@ class EditContact(ContactOperation):
             2: "Phone number"
         }
         user_input: str = input("What user do you want to edit? ").capitalize()
-        checker: bool = self.check.check_user_in_the_list(user_input)
-        index: int = self.check.return_contact_index(user_input)
+        checker: bool = self.check_user_in_the_list.logic_check_operation(
+            user_input)
+        index: int = self.return_contact_index.logic_check_operation(
+            user_input)
         if checker:
             while True:
                 for key, value in chose.items():
                     print(f"{key}: {value}")
                 user_answer: str = input("\n What do you want to change? ")
-                user_answer: int = self.validator.checker_for_int(
+                user_answer: int = self.int_validator.validation(
                     user_answer, "What do you want to change? ")
                 if user_answer == 1:
                     user_name_input: str = input(
@@ -85,12 +101,14 @@ class RemoveContact(ContactOperation):
     def operation(self):
         user_input: str = input(
             "What user do you want to remove? ").capitalize()
-        checker: bool = self.check.check_user_in_the_list(user_input)
+        checker: bool = self.check_user_in_the_list.logic_check_operation(
+            user_input)
         if checker:
             user_answer: str = input("Are you sure? y/n ")
-            user_answer: str = self.validator.checker_yes_or_no(user_answer)
+            user_answer: str = self.yes_no_validator.validation(user_answer)
             if user_answer:
-                check_answer: str = self.check.return_contact(user_input)
+                check_answer: str = self.return_contact.logic_check_operation(
+                    user_input)
                 self.book.list_of_contacts.remove(check_answer)
             else:
                 return
