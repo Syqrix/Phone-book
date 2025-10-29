@@ -11,7 +11,7 @@ class ContactOperations:
     def create(self) -> None:
         while True:
             contact_name: str = Validators.check_empty_important_data_validator(
-                input("Name: ").capitalize(), "Name: "
+                input("Name: ").title(), "Name: "
             )
             contact_name = self.check_logic.check_dublicat_names(contact_name)
             if contact_name is False:
@@ -27,7 +27,7 @@ class ContactOperations:
                 continue
             else:
                 break
-        new_contact: Contact  = Contact(
+        new_contact: Contact = Contact(
             contact_name=contact_name, phone_number=phone_number
         )
 
@@ -35,7 +35,8 @@ class ContactOperations:
         print(f"User: {new_contact.contact_name} has been created!")
 
     def check_contact(self) -> None:
-        user_input: str = input("What user do you want to check? ").capitalize()
+        user_input: str = input(
+            "What user do you want to check? ").capitalize()
         checker: bool = self.check_logic.check_user_in_the_list(user_input)
         if checker:
             print(f"User: {user_input} is in the phone book!")
@@ -65,7 +66,7 @@ class ContactOperations:
                     break
                 elif user_answer == 2:
                     user_phone_number_input: str = input(
-                        f"What new phone number for this user: {user_input}? "
+                        f"What new phone number for this user: {user_input}? +"
                     )
                     self.book.list_of_contacts[index].phone_number = (
                         "+" + user_phone_number_input
@@ -75,7 +76,8 @@ class ContactOperations:
                     print("There in no such number, try again!")
 
     def remove(self):
-        user_input: str = input("What user do you want to remove? ").capitalize()
+        user_input: str = input(
+            "What user do you want to remove? ").capitalize()
         checker: bool = self.check_logic.check_user_in_the_list(user_input)
         if checker:
             user_answer_y_or_n: str = input("Are you sure? y/n ")

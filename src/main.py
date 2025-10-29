@@ -40,13 +40,12 @@ def main():
     ui = Comunication()
 
     # --- Check logic utilit ---
-    check_logic = CheckLogic()
+    check_logic = CheckLogic(book)
 
     # --- Data ---
     save_json_data = SaveDataToJson(book)
     load_json_data = LoadDataFromJson(book)
     check_folder = DataManager()
-    
 
     # ---Phone book operatins---
     phone_book_operations = PhoneBookOperations(book, ui, save_json_data)

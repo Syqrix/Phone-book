@@ -32,5 +32,5 @@ class Menu:
                     continue
                 else:
                     break
-            _, func = operations[user_input]
+            _, func = operations[user_answer]
             func()

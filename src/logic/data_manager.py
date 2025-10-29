@@ -7,7 +7,7 @@ from abc import ABC, abstractmethod
 
 
 class DataManager:
-    def __init__(self, book):
+    def __init__(self):
         self.path_of_folder = Path("data")
 
     def check_folder(self):
@@ -45,7 +45,8 @@ class SaveDataToJson(SaveData):
         with open(self.path_of_json_data, "w", encoding="utf-8") as file:
             data = {
                 "contacts": [
-                    {"name": contact.contact_name, "phone_number": contact.phone_number}
+                    {"name": contact.contact_name,
+                        "phone_number": contact.phone_number}
                     for contact in self.book.list_of_contacts
                 ]
             }
@@ -99,7 +100,8 @@ class LoadDataFromTxt(LoadData):
                     name = name.strip()
                     phone_number = phone_number.strip()
 
-                    contact = Contact(contact_name=name, phone_number=phone_number)
+                    contact = Contact(contact_name=name,
+                                      phone_number=phone_number)
 
                     self.book.list_of_contacts.append(contact)
                 except ValueError:

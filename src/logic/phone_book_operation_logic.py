@@ -9,7 +9,6 @@ class PhoneBookOperations:
         self.ui = ui
         self.save_json_data = save_json_data
 
-    @staticmethod
     def show_contacts(self) -> None:
         if not self.book.list_of_contacts:
             print("There is nothing in the phone book.")
@@ -18,7 +17,6 @@ class PhoneBookOperations:
             for contact in self.book.list_of_contacts:
                 print(f"{contact.contact_name} | {contact.phone_number}")
 
-    @staticmethod
     def clear_phone_book(self) -> None:
         user_wish: str = input("Do you really want to clear phone_book y/n? ")
         checker: bool = Validators.check_y_n_validator(
@@ -26,6 +24,7 @@ class PhoneBookOperations:
         )
         if checker:
             self.book.list_of_contacts.clear()
+            print("Phone book has been cleared!")
         else:
             return None
 

@@ -1,11 +1,11 @@
 # This module uses for checkng logic of the app
 from typing import Union
 
+
 class CheckLogic:
     def __init__(self, book):
         self.book = book
 
-    @staticmethod
     def check_user_in_the_list(self, user_input: str) -> bool:
         for contact in self.book.list_of_contacts:
             if contact.contact_name == user_input:
@@ -14,7 +14,6 @@ class CheckLogic:
                 continue
         return False
 
-    @staticmethod
     def return_contact(self, user_input: str) -> Union[object, None]:
         for contact in self.book.list_of_contacts:
             if contact.contact_name == user_input:
@@ -23,7 +22,6 @@ class CheckLogic:
                 continue
         return None
 
-    @staticmethod
     def return_contact_index(self, user_input: str) -> Union[int, None]:
         for contact in self.book.list_of_contacts:
             if contact.contact_name == user_input:
@@ -33,18 +31,16 @@ class CheckLogic:
                 continue
         return None
 
-    @staticmethod
     def check_dublicat_number(self, phone_number: str) -> Union[str, bool]:
         for contact in self.book.list_of_contacts:
-            if contact.phone_number == phone_number:
+            if contact.phone_number == "+" + phone_number:
                 print("You already have this number in your phone book")
                 return False
             else:
                 continue
         return "+" + phone_number
 
-    @staticmethod
-    def check_dublicat_names(self, name: str) -> Union[str, bool]:
+    def check_dublicat_names(self, name: str) -> str:
         for contact in self.book.list_of_contacts:
             if contact.contact_name == name:
                 print("There is same name already, try another one!")
