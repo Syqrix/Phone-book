@@ -1,83 +1,63 @@
 # This window for main content of my app
-from ui import SayHi, SayBye
-from logic import CheckFolder, CheckPhoneBook, ClearPhoneBook, ExitPhoneBook
-from logic import ChooseOperation, CreateContact, CheckContact, EditContact
-from logic import RemoveContact
-from logic import LoadDataFromJson, SaveDataToJson
+from ui.comunication import Comunication
+from logic import PhoneBookOperations, Menu
+from logic import ContactOperations
+from logic import LoadDataFromJson, SaveDataToJson, DataManager
 from models import PhoneBook
-from utilities import ChekerForInt, CheckerYesOrNo, CheckEmptyImportantData
-from utilities import NumberValidator, CheckDublicatNames, CheckDublicatNumber
-from utilities import CheckUserInTheList, ReturnContactIndex, ReturnContact
+from utilities import CheckLogic
 
 
 class App:
-    def __init__(self, say_hi: SayHi, say_bye: SayBye,
-                 choose_user_wish: ChooseOperation, check_folder: CheckFolder,
-                 load_json_data: LoadDataFromJson, save_json_data: SaveDataToJson):
-        self.say_hi = say_hi
-        self.say_bye = say_bye
-        self.choose_user_wish = choose_user_wish
+    def __init__(
+        self,
+        ui: Comunication,
+        menu: Menu,
+        check_folder: DataManager,
+        load_json_data: LoadDataFromJson,
+        save_json_data: SaveDataToJson,
+    ):
+        self.ui = ui
+        self.menu = menu
         self.check_folder = check_folder
         self.load_json_data = load_json_data
         self.save_json_data = save_json_data
 
     def run(self):
         while True:
-            self.check_folder.operation()
+            self.check_folder.check_folder()
             self.load_json_data.load_data()
-            self.say_hi.say()
-            self.choose_user_wish.operation()
+            self.ui.say_hi()
+            self.menu.choose_the_operation()
             self.save_json_data.save_data()
-            self.say_bye.say()
+            self.ui.say_bye()
 
 
 def main():
     # --- Phone book ---
     book = PhoneBook()
 
-    # --- Validators ---
-    int_validator = ChekerForInt()
-    yes_no_validator = CheckerYesOrNo()
-    empty_check_validator = CheckEmptyImportantData()
-    number_validator = NumberValidator()
+    # --- Comunication ---
+    ui = Comunication()
 
-    # --- Logic checking ---
-    check_duplicat_names = CheckDublicatNames(book)
-    check_dublicat_number = CheckDublicatNumber(book)
-    check_user_in_the_list = CheckUserInTheList(book)
-    return_contact_index = ReturnContactIndex(book)
-    return_contact = ReturnContact(book)
+    # --- Check logic utilit ---
+    check_logic = CheckLogic()
 
     # --- Data ---
     save_json_data = SaveDataToJson(book)
     load_json_data = LoadDataFromJson(book)
-    check_folder = CheckFolder(book)
+    check_folder = DataManager()
+    
 
-    # --- Ui ---
-    say_hi = SayHi()
-    say_bye = SayBye()
+    # ---Phone book operatins---
+    phone_book_operations = PhoneBookOperations(book, ui, save_json_data)
 
     # --- Operations ---
-    create_contact = CreateContact(
-        book, empty_check_validator, number_validator, check_duplicat_names,
-        check_dublicat_number)
-    check_contact = CheckContact(check_user_in_the_list)
-    edit_contact = EditContact(
-        book, int_validator, check_user_in_the_list, return_contact_index)
-    remove_contact = RemoveContact(
-        book, yes_no_validator, check_user_in_the_list, return_contact)
-    check_phone_book = CheckPhoneBook(book)
-    clear_phone_book = ClearPhoneBook(book, yes_no_validator)
-    exit_phone_book = ExitPhoneBook(save_json_data, say_bye)
+    contact_operations = ContactOperations(book, check_logic)
 
-    choose_user_wish = ChooseOperation(
-        int_validator, check_phone_book, clear_phone_book, exit_phone_book,
-        create_contact, check_contact, edit_contact, remove_contact)
+    menu = Menu(phone_book_operations, contact_operations)
 
     # --- Main App ---
-    app = App(
-        say_hi, say_bye, choose_user_wish, check_folder,
-        load_json_data, save_json_data)
+    app = App(ui, menu, check_folder, load_json_data, save_json_data)
     app.run()
 
 

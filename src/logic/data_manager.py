@@ -1,38 +1,22 @@
 # This module uses for save data of our contacts
 import csv
 import json
-from dataclasses import asdict
 from pathlib import Path
 from models import Contact
 from abc import ABC, abstractmethod
 
 
-class DataManager(ABC):
-
+class DataManager:
     def __init__(self, book):
         self.path_of_folder = Path("data")
-        self.path_of_text_data = Path("data/data.txt")
-        self.path_of_json_data = Path("data/data.json")
-        self.path_of_csv_data = Path("data/data.csv")
-        self.book = book
 
-    @abstractmethod
-    def operation(self):
-        pass
-
-
-class CheckFolder(DataManager):
-    def __init__(self, book):
-        super().__init__(book)
-
-    def operation(self):
+    def check_folder(self):
         if not self.path_of_folder.exists():
             self.path_of_folder.mkdir()
 
 
 class SaveData(ABC):
     def __init__(self, book):
-        self.path_of_folder = Path("data")
         self.path_of_text_data = Path("data/data.txt")
         self.path_of_json_data = Path("data/data.json")
         self.path_of_csv_data = Path("data/data.csv")
@@ -50,8 +34,7 @@ class SaveDataToTxt(SaveData):
     def save_data(self):
         with open(self.path_of_text_data, "w") as file:
             for contact in self.book.list_of_contacts:
-                file.write(
-                    f"{contact.contact_name}, {contact.phone_number}\n")
+                file.write(f"{contact.contact_name}, {contact.phone_number}\n")
 
 
 class SaveDataToJson(SaveData):
@@ -60,9 +43,12 @@ class SaveDataToJson(SaveData):
 
     def save_data(self):
         with open(self.path_of_json_data, "w", encoding="utf-8") as file:
-            data = {"contacts": [{"name": contact.contact_name,
-                    "phone_number": contact.phone_number
-                                  } for contact in self.book.list_of_contacts]}
+            data = {
+                "contacts": [
+                    {"name": contact.contact_name, "phone_number": contact.phone_number}
+                    for contact in self.book.list_of_contacts
+                ]
+            }
             json.dump(data, file, indent=4)
 
 
@@ -74,15 +60,15 @@ class SaveDataToCsv(SaveData):
         with open(self.path_of_csv_data, "w", encoding="utf-8") as file:
             writer = csv.DictWriter(file, fieldnames=["name", "phone_number"])
             writer.writeheader()
-            data = [{"name": contact.contact_name,
-                     "phone_number": contact.phone_number
-                     } for contact in self.book.list_of_contacts]
+            data = [
+                {"name": contact.contact_name, "phone_number": contact.phone_number}
+                for contact in self.book.list_of_contacts
+            ]
             writer.writerows(data)
 
 
 class LoadData(ABC):
     def __init__(self, book):
-        self.path_of_folder = Path("data")
         self.path_of_text_data = Path("data/data.txt")
         self.path_of_json_data = Path("data/data.json")
         self.path_of_csv_data = Path("data/data.csv")
@@ -113,8 +99,7 @@ class LoadDataFromTxt(LoadData):
                     name = name.strip()
                     phone_number = phone_number.strip()
 
-                    contact = Contact(contact_name=name,
-                                      phone_number=phone_number)
+                    contact = Contact(contact_name=name, phone_number=phone_number)
 
                     self.book.list_of_contacts.append(contact)
                 except ValueError:
@@ -135,8 +120,9 @@ class LoadDataFromJson(LoadData):
             data = json.load(file)
             data = data["contacts"]
             for obj in data:
-                new_contact = Contact(contact_name=obj.get(
-                    "name"), phone_number=obj.get("phone_number"))
+                new_contact = Contact(
+                    contact_name=obj.get("name"), phone_number=obj.get("phone_number")
+                )
                 self.book.list_of_contacts.append(new_contact)
 
 
@@ -152,5 +138,6 @@ class LoadDataFromCsv(LoadData):
             reader = csv.DictReader(file)
             for row in reader:
                 new_contact = Contact(
-                    contact_name=row['name'], phone_number=row["phone_number"])
+                    contact_name=row["name"], phone_number=row["phone_number"]
+                )
                 self.book.list_of_contacts.append(new_contact)

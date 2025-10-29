@@ -1,3 +1,8 @@
 {
-    "contacts": []
+    "contacts": [
+        {
+            "name": "Edw",
+            "phone_number": "+59"
+        }
+    ]
 }

@@ -1,50 +1,35 @@
 # This module uses for phone book logic
 import sys
-from abc import ABC, abstractmethod
+from utilities import Validators
 
 
-class PhoneBookOperation(ABC):
-    def __init__(self, book=None, yes_no_validator=None, say_bye=None, save_json_data=None):
+class PhoneBookOperations:
+    def __init__(self, book, ui, save_json_data):
         self.book = book
-        self.yes_no_validator = yes_no_validator
-        self.say_bye = say_bye
+        self.ui = ui
         self.save_json_data = save_json_data
 
-    @abstractmethod
-    def phone_book_operation(self):
-        pass
-
-
-class CheckPhoneBook(PhoneBookOperation):
-    def __init__(self, book):
-        super().__init__(book=book)
-
-    def phone_book_operation(self) -> str:
+    @staticmethod
+    def show_contacts(self) -> None:
         if not self.book.list_of_contacts:
-            print("There is no one in phone book.")
+            print("There is nothing in the phone book.")
+            return None
         else:
             for contact in self.book.list_of_contacts:
                 print(f"{contact.contact_name} | {contact.phone_number}")
 
-
-class ClearPhoneBook(PhoneBookOperation):
-    def __init__(self, book, yes_no_validator):
-        super().__init__(book=book, yes_no_validator=yes_no_validator)
-
-    def phone_book_operation(self):
+    @staticmethod
+    def clear_phone_book(self) -> None:
         user_wish: str = input("Do you really want to clear phone_book y/n? ")
-        checker: bool = self.yes_no_validator.validation(user_wish)
+        checker: bool = Validators.check_y_n_validator(
+            user_wish, "Do you really want to clear phone_book y/n? "
+        )
         if checker:
             self.book.list_of_contacts.clear()
         else:
-            return
+            return None
 
-
-class ExitPhoneBook(PhoneBookOperation):
-    def __init__(self, save_json_data, say_bye):
-        super().__init__(save_json_data=save_json_data, say_bye=say_bye)
-
-    def phone_book_operation(self):
+    def exit(self) -> SystemExit:
         self.save_json_data.save_data()
-        self.say_bye.say()
+        self.ui.say_bye()
         sys.exit()

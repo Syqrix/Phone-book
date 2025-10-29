@@ -1,21 +1,12 @@
 # This module uses for checkng logic of the app
-from abc import ABC, abstractmethod
+from typing import Union
 
-
-class Check(ABC):
+class CheckLogic:
     def __init__(self, book):
         self.book = book
 
-    @abstractmethod
-    def logic_check_operation(self, user_data):
-        pass
-
-
-class CheckUserInTheList(Check):
-    def __init__(self, book):
-        super().__init__(book)
-
-    def logic_check_operation(self, user_input: str) -> bool:
+    @staticmethod
+    def check_user_in_the_list(self, user_input: str) -> bool:
         for contact in self.book.list_of_contacts:
             if contact.contact_name == user_input:
                 return True
@@ -23,37 +14,27 @@ class CheckUserInTheList(Check):
                 continue
         return False
 
-
-class ReturnContact(Check):
-    def __init__(self, book):
-        super().__init__(book)
-
-    def logic_check_operation(self, user_input: str) -> object:
+    @staticmethod
+    def return_contact(self, user_input: str) -> Union[object, None]:
         for contact in self.book.list_of_contacts:
             if contact.contact_name == user_input:
                 return contact
             else:
                 continue
+        return None
 
-
-class ReturnContactIndex(Check):
-    def __init__(self, book):
-        super().__init__(book)
-
-    def logic_check_operation(self, user_input: str) -> int:
+    @staticmethod
+    def return_contact_index(self, user_input: str) -> Union[int, None]:
         for contact in self.book.list_of_contacts:
             if contact.contact_name == user_input:
                 index_of_contact = self.book.list_of_contacts.index(contact)
                 return index_of_contact
             else:
                 continue
+        return None
 
-
-class CheckDublicatNumber(Check):
-    def __init__(self, book):
-        super().__init__(book)
-
-    def logic_check_operation(self, phone_number: str) -> str:
+    @staticmethod
+    def check_dublicat_number(self, phone_number: str) -> Union[str, bool]:
         for contact in self.book.list_of_contacts:
             if contact.phone_number == phone_number:
                 print("You already have this number in your phone book")
@@ -62,12 +43,8 @@ class CheckDublicatNumber(Check):
                 continue
         return "+" + phone_number
 
-
-class CheckDublicatNames(Check):
-    def __init__(self, book):
-        super().__init__(book)
-
-    def logic_check_operation(self, name: str) -> str:
+    @staticmethod
+    def check_dublicat_names(self, name: str) -> Union[str, bool]:
         for contact in self.book.list_of_contacts:
             if contact.contact_name == name:
                 print("There is same name already, try another one!")
