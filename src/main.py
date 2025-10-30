@@ -52,7 +52,7 @@ def main():
 
     # --- Operations ---
     contact_operations = ContactOperations(book, check_logic)
-
+    # --- Menu ---
     menu = Menu(phone_book_operations, contact_operations)
 
     # --- Main App ---
