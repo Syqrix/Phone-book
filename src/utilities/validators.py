@@ -41,7 +41,7 @@ class Validators:
         while True:
             if not user_input:
                 print("This valuse should'nt be empty!, please enter something.")
-                user_input = input(text_input).title()
+                user_input = input(text_input).capitalize()
                 continue
             else:
                 return user_input

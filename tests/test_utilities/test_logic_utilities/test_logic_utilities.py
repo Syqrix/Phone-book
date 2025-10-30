@@ -15,6 +15,7 @@ class TestLogicUtilities:
         def test_return_contact_true(obj):
             object = obj.return_contact("Right name")
             assert object.contact_name == "Right name"
+            assert object.phone_number == "+71234567890"
 
         @staticmethod
         def test_return_contact_false(obj):
@@ -38,7 +39,7 @@ class TestLogicUtilities:
             result = obj.check_dublicat_number("71234567890")
             captured = capsys.readouterr()
             assert result == False
-            assert "You already have this number in your phone book" in captured.out
+            assert "You already have this number! try another one" in captured.out
 
         @staticmethod
         def test_dublicat_number_false(obj):
@@ -51,7 +52,7 @@ class TestLogicUtilities:
             result = obj.check_dublicat_names("Right name")
             captured = capsys.readouterr()
             assert result == False
-            assert "There is same name already, try another one!" in captured.out
+            assert "You already have such user in your phone book! Try another one" in captured.out
 
         @staticmethod
         def test_dublicat_name_false(obj):

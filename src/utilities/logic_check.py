@@ -35,7 +35,7 @@ class CheckLogic:
             elif self.book.list_of_contacts[mid].contact_name > target:
                 high = mid - 1
             else:
-                return target
+                return self.book.list_of_contacts[mid]
         return None
 
     def return_contact_index(self, target: str) -> Union[int, None]:

@@ -1,6 +1,6 @@
 # This module uses for operations with contacts
 from models import Contact
-from utilities import Validators, CheckLogic
+from utilities import Validators
 
 
 class ContactOperations:
@@ -11,7 +11,7 @@ class ContactOperations:
     def create(self) -> None:
         while True:
             contact_name: str = Validators.check_empty_important_data_validator(
-                input("Name: ").title(), "Name: "
+                input("Name: ").capitalize(), "Name: "
             )
             contact_name = self.check_logic.check_dublicat_names(contact_name)
             if contact_name is False:
