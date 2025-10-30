@@ -1,35 +1,62 @@
 # This window for main content of my app
-from ui import Comunication
-from logic import ContactOperations, PhoneBookOperations, Menu, DataManager
+from ui.comunication import Comunication
+from logic import PhoneBookOperations, Menu
+from logic import ContactOperations
+from logic import LoadDataFromJson, SaveDataToJson, DataManager
 from models import PhoneBook
-from utilities import Validator, Check
+from utilities import CheckLogic
 
 
 class App:
-    def __init__(self, ui: Comunication, menu: Menu, data_manager: DataManager):
+    def __init__(
+        self,
+        ui: Comunication,
+        menu: Menu,
+        check_folder: DataManager,
+        load_json_data: LoadDataFromJson,
+        save_json_data: SaveDataToJson,
+    ):
         self.ui = ui
         self.menu = menu
-        self.data_manager = data_manager
+        self.check_folder = check_folder
+        self.load_json_data = load_json_data
+        self.save_json_data = save_json_data
 
     def run(self):
         while True:
-            self.data_manager.load_data()
+            self.check_folder.check_folder()
+            self.load_json_data.load_data()
             self.ui.say_hi()
-            self.menu.user_wish()
+            self.menu.choose_the_operation()
+            self.save_json_data.save_data()
             self.ui.say_bye()
 
 
 def main():
-    ui = Comunication()
-    validator = Validator()
+    # --- Phone book ---
     book = PhoneBook()
-    data_manager = DataManager(book)
-    check = Check(book)
-    contact_operation = ContactOperations(validator, book, check)
-    phone_book_operation = PhoneBookOperations(
-        book, validator, ui, data_manager)
-    menu = Menu(validator, contact_operation, phone_book_operation)
-    app = App(ui, menu, data_manager)
+
+    # --- Comunication ---
+    ui = Comunication()
+
+    # --- Check logic utilit ---
+    check_logic = CheckLogic(book)
+
+    # --- Data ---
+    save_json_data = SaveDataToJson(book)
+    load_json_data = LoadDataFromJson(book)
+    check_folder = DataManager()
+
+    # ---Phone book operatins---
+    phone_book_operations = PhoneBookOperations(book, ui, save_json_data)
+
+    # --- Operations ---
+    contact_operations = ContactOperations(book, check_logic)
+    # --- Menu ---
+    menu = Menu(phone_book_operations, contact_operations)
+
+    # --- Main App ---
+    app = App(ui, menu, check_folder, load_json_data, save_json_data)
     app.run()
 
 

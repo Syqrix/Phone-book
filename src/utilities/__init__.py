@@ -1,2 +1,2 @@
-from .validators import Validator
-from .logic_check import Check
+from .logic_check import CheckLogic
+from .validators import Validators 

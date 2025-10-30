@@ -1,31 +1,90 @@
+# This module uses for save data of our contacts
 import csv
 import json
-from dataclasses import asdict
 from pathlib import Path
 from models import Contact
+from abc import ABC, abstractmethod
 
 
 class DataManager:
-
-    def __init__(self, book):
+    def __init__(self):
         self.path_of_folder = Path("data")
-        self.path_of_text_data = Path("data/data.txt")
-        self.path_of_json_data = Path("data/data.json")
-        self.path_of_csv_data = Path("data/data.csv")
-        self.book = book
-        self.json_template = '{"Contacts": []}'
 
     def check_folder(self):
         if not self.path_of_folder.exists():
             self.path_of_folder.mkdir()
 
-    def save_data_to_txt(self):
+
+class SaveData(ABC):
+    def __init__(self, book):
+        self.path_of_text_data = Path("data/data.txt")
+        self.path_of_json_data = Path("data/data.json")
+        self.path_of_csv_data = Path("data/data.csv")
+        self.book = book
+
+    @abstractmethod
+    def save_data(self):
+        pass
+
+
+class SaveDataToTxt(SaveData):
+    def __init__(self, book):
+        super().__init__(book)
+
+    def save_data(self):
         with open(self.path_of_text_data, "w") as file:
             for contact in self.book.list_of_contacts:
-                file.write(
-                    f"{contact.contact_name}, {contact.phone_number}\n")
+                file.write(f"{contact.contact_name}, {contact.phone_number}\n")
 
-    def load_data_from_txt(self):
+
+class SaveDataToJson(SaveData):
+    def __init__(self, book):
+        super().__init__(book)
+
+    def save_data(self):
+        with open(self.path_of_json_data, "w", encoding="utf-8") as file:
+            data = {
+                "contacts": [
+                    {"name": contact.contact_name,
+                        "phone_number": contact.phone_number}
+                    for contact in self.book.list_of_contacts
+                ]
+            }
+            json.dump(data, file, indent=4)
+
+
+class SaveDataToCsv(SaveData):
+    def __init__(self, book):
+        super().__init__(book)
+
+    def save_data_to_csv(self):
+        with open(self.path_of_csv_data, "w", encoding="utf-8") as file:
+            writer = csv.DictWriter(file, fieldnames=["name", "phone_number"])
+            writer.writeheader()
+            data = [
+                {"name": contact.contact_name, "phone_number": contact.phone_number}
+                for contact in self.book.list_of_contacts
+            ]
+            writer.writerows(data)
+
+
+class LoadData(ABC):
+    def __init__(self, book):
+        self.path_of_text_data = Path("data/data.txt")
+        self.path_of_json_data = Path("data/data.json")
+        self.path_of_csv_data = Path("data/data.csv")
+        self.book = book
+
+    @abstractmethod
+    def load_data(self):
+        pass
+
+
+class LoadDataFromTxt(LoadData):
+    def __init__(self, book):
+        super().__init__(book)
+
+    def load_data(self):
         self.book.list_of_contacts = []
         if not self.path_of_text_data.exists():
             self.path_of_text_data.touch()
@@ -48,14 +107,12 @@ class DataManager:
                 except ValueError:
                     print("Wrong data")
 
-    def save_data_to_json(self):
-        with open(self.path_of_json_data, "w", encoding="utf-8") as file:
-            data = {"contacts": [{"name": contact.contact_name,
-                    "phone_number": contact.phone_number
-                                  } for contact in self.book.list_of_contacts]}
-            json.dump(data, file, indent=4)
 
-    def load_data_from_json(self):
+class LoadDataFromJson(LoadData):
+    def __init__(self, book):
+        super().__init__(book)
+
+    def load_data(self):
         if not self.path_of_json_data.exists():
             self.path_of_json_data.touch()
         if self.path_of_json_data.stat().st_size == 0:
@@ -65,20 +122,17 @@ class DataManager:
             data = json.load(file)
             data = data["contacts"]
             for obj in data:
-                new_contact = Contact(contact_name=obj.get(
-                    "name"), phone_number=obj.get("phone_number"))
+                new_contact = Contact(
+                    contact_name=obj.get("name"), phone_number=obj.get("phone_number")
+                )
                 self.book.list_of_contacts.append(new_contact)
 
-    def save_data_to_csv(self):
-        with open(self.path_of_csv_data, "w", encoding="utf-8") as file:
-            writer = csv.DictWriter(file, fieldnames=["name", "phone_number"])
-            writer.writeheader()
-            data = [{"name": contact.contact_name,
-                     "phone_number": contact.phone_number
-                     } for contact in self.book.list_of_contacts]
-            writer.writerows(data)
 
-    def load_data_from_csv(self):
+class LoadDataFromCsv(LoadData):
+    def __init__(self, book):
+        super().__init__(book)
+
+    def load_data(self):
         if not self.path_of_csv_data.exists():
             self.path_of_csv_data.touch()
 
@@ -86,12 +140,6 @@ class DataManager:
             reader = csv.DictReader(file)
             for row in reader:
                 new_contact = Contact(
-                    contact_name=row['name'], phone_number=row["phone_number"])
+                    contact_name=row["name"], phone_number=row["phone_number"]
+                )
                 self.book.list_of_contacts.append(new_contact)
-
-    def save_data(self):
-        self.save_data_to_json()
-
-    def load_data(self):
-        self.check_folder()
-        self.load_data_from_json()
