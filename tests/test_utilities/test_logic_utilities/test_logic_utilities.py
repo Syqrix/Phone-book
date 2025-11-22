@@ -3,12 +3,12 @@ class TestLogicUtilities:
         @staticmethod
         def test_check_user_in_the_list_false(obj):
             result = obj.check_user_in_the_list("Not right name")
-            assert result == False
+            assert not result
 
         @staticmethod
         def test_check_user_in_the_list_true(obj):
             result = obj.check_user_in_the_list("Right name")
-            assert result == True
+            assert result
 
     class TestReturnContact:
         @staticmethod
@@ -20,7 +20,7 @@ class TestLogicUtilities:
         @staticmethod
         def test_return_contact_false(obj):
             object = obj.return_contact("Not right name")
-            assert object == None
+            assert object is None
 
     class TestReturnIndex:
         @staticmethod
@@ -31,14 +31,14 @@ class TestLogicUtilities:
         @staticmethod
         def test_index_false(obj):
             result = obj.return_contact_index("Not right name")
-            assert result == None
+            assert result is None
 
     class TestDublicatNumber:
         @staticmethod
         def test_dublicat_number_true(obj, capsys):
             result = obj.check_dublicat_number("71234567890")
             captured = capsys.readouterr()
-            assert result == False
+            assert result is False
             assert "You already have this number! try another one" in captured.out
 
         @staticmethod
@@ -51,7 +51,7 @@ class TestLogicUtilities:
         def test_dublicat_name_true(obj, capsys):
             result = obj.check_dublicat_names("Right name")
             captured = capsys.readouterr()
-            assert result == False
+            assert not result
             assert "You already have such user in your phone book! Try another one" in captured.out
 
         @staticmethod

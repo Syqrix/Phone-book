@@ -6,12 +6,12 @@ class TestValidators:
         @staticmethod
         def test_y_n_validator_true(obj):
             result = obj.check_y_n_validator("Y", "Fake text")
-            assert result == True
+            assert result
 
         @staticmethod
         def test_y_n_validator_false(obj):
             result = obj.check_y_n_validator("N", "Fake text")
-            assert result == False
+            assert result
 
         @staticmethod
         def test_y_n_validator_wrong(obj, monkeypatch, capsys):
@@ -32,7 +32,7 @@ class TestValidators:
         def test_int_validator_false(obj, monkeypatch, capsys):
             inputs = iter(["gjhfd", "5"])
             monkeypatch.setattr("builtins.input", lambda _: next(inputs))
-            result = obj.check_int_validator("", "Fake text")
+            obj.check_int_validator("", "Fake text")
             captured = capsys.readouterr()
             assert "It's empty please try enter something!" in captured.out
             assert "Only numbers!" in captured.out
@@ -40,7 +40,7 @@ class TestValidators:
         @staticmethod
         def test_int_validator_exit(obj):
             with pytest.raises(SystemExit):
-                result = obj.check_int_validator("Q", "Fake text")
+                obj.check_int_validator("Q", "Fake text")
 
     class TestValidatorCheckEmpty:
         @staticmethod

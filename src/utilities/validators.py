@@ -40,7 +40,8 @@ class Validators:
     def check_empty_important_data_validator(user_input: str, text_input: str) -> str:
         while True:
             if not user_input:
-                print("This valuse should'nt be empty!, please enter something.")
+                print(
+                    "This valuse should'nt be empty!, please enter something.")
                 user_input = input(text_input).capitalize()
                 continue
             else:
@@ -50,7 +51,8 @@ class Validators:
     def check_phone_number_validator(user_input: str, text_input: str) -> str:
         while True:
             if not user_input:
-                print("This valuse should'nt be empty!, please enter something.")
+                print(
+                    "This valuse should'nt be empty!, please enter something.")
                 user_input = input(text_input)
                 continue
             elif not user_input.isdigit():

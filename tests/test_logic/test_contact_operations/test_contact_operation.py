@@ -42,8 +42,8 @@ class TestContactsOperations:
 
         @staticmethod
         def test_edit_phone_number(
-                fake_contact_operations_with_data, fake_phone_book_operation_empty,
-                monkeypatch):
+                fake_contact_operations_with_data,
+                fake_phone_book_operation_empty, monkeypatch):
             fake_phone_book_operation_empty.show_contacts()
             assert "True name | +70000000000"
             inputs = iter(

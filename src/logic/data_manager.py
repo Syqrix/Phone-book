@@ -123,7 +123,8 @@ class LoadDataFromJson(LoadData):
             data = data["contacts"]
             for obj in data:
                 new_contact = Contact(
-                    contact_name=obj.get("name"), phone_number=obj.get("phone_number")
+                    contact_name=obj.get("name"),
+                    phone_number=obj.get("phone_number")
                 )
                 self.book.list_of_contacts.append(new_contact)
 
