@@ -8,7 +8,7 @@ I developed this project to practice my skills. It is a simple console-based pho
 + Python: 3.12.3
 + Packer manager: Uv
 + Utilites: MyPy, Ruff, Pytest, Black
-## Instalation
+## Installation
 How to install:
 
 1) git clone https://github.com/Syqrix/Phone-book.git
