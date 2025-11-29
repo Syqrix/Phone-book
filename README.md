@@ -6,7 +6,7 @@ I developed this project to practice my skills. It is a simple console-based pho
 + Data validation
 ## Tools
 + Python: 3.12.3
-+ Packer manager: Uv
++ Package manager: Uv
 + Utilites: MyPy, Ruff, Pytest, Black
 ## Installation
 How to install:
